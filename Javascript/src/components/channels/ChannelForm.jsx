@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 class ChannelForm extends Component {
     onSubmitFunction(e) {
         e.preventDefault();
-        const node = this.ref.channel;
+        const node = this.refs.channel;
         const channelName = node.value;
         this.props.addChannel(channelName);
         node.value = '';
@@ -15,7 +15,7 @@ class ChannelForm extends Component {
             <form onSubmit={this.onSubmitFunction.bind(this)}>
                 <input
                     type='text'
-                    ref='channel' 
+                    ref='channel'
                 />
             </form>
         )
