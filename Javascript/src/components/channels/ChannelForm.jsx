@@ -22,5 +22,7 @@ class ChannelForm extends Component {
 }
 
 ChannelForm.propTypes = {
-    addChannel = React.PropTypes.func.isRequired
+    addChannel: React.PropTypes.func.isRequired
 }
+
+export default ChannelForm
