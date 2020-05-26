@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class Channel extends Component {
     
@@ -21,8 +22,8 @@ class Channel extends Component {
 }
 
 Channel.propTypes = {
-    channel: React.PropTypes.object.isRequired,
-    setChannel: React.PropTypes.func.isRequired,
+    channel: PropTypes.object.isRequired,
+    setChannel: PropTypes.func.isRequired,
 }
 
 export default Channel

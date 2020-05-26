@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import ChannelForm from './ChannelForm.jsx';
 import ChannelList from './ChannelList.jsx';
 
@@ -14,9 +16,9 @@ class ChannelSection extends Component {
 }
 
 ChannelSection.propTypes = {
-    addChannel: React.PropTypes.func.isRequired,
-    setChannel: React.PropTypes.func.isRequired,
-    channels: React.PropTypes.array.isRequired
+    addChannel: PropTypes.func.isRequired,
+    setChannel: PropTypes.func.isRequired,
+    channels: PropTypes.array.isRequired
 }
 
 export default ChannelSection
