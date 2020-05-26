@@ -1,8 +1,8 @@
-import React, { component } from 'react';
+import React, { Component } from 'react';
 import Channel from './Channel.jsx'
 
 
-class ChannelList extends component {
+class ChannelList extends Component {
     render() {
         return (
             <ul>

@@ -1,6 +1,6 @@
-import React, { component } from 'react';
+import React, { Component } from 'react';
 
-class Channel extends component {
+class Channel extends Component {
     
     onClickFunction(e) {
         e.preventDefault();
