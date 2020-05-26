@@ -9,9 +9,9 @@ class ChannelList extends Component {
         return (
             <ul>
                 {
-                    this.props.channels.map( (chan, index) => {
+                    this.props.channels.map( chan => {
                         return <Channel 
-                            key={index}
+                            key={chan.id}
                             channel={chan}
                             setChannel={this.props.setChannel}
                         />
