@@ -11,8 +11,33 @@ class App extends Component {
             activeUser: {},
             channels: [],
             users: [],
-            messages: []
+            messages: [],
+            connected: false
         };
+    }
+
+    // Lifecycle hooks
+
+    componentDidMount() {
+        // Connect to websocker
+        let webSocket = new WebSocket('ws://echo.websocket.io')
+        webSocket.onmessage = this.message.bind(this);
+        webSocket.onopen = this.onOpen.bind(this);
+        webSocket.onclose = this.onClose.bind(this);
+    }
+
+    // *-*End lifecycle hooks*-*
+
+    message(e) {
+
+    }
+
+    onOpen() {
+        this.setState({connected: true});
+    }
+
+    onClose() {
+        this.setState({connected: false});
     }
 
     addChannel(name){
@@ -48,6 +73,7 @@ class App extends Component {
         messages.push({id: messages.length, body, createdAt, author});
         this.setState({ messages });
     }
+
 
     render() {
         return(
