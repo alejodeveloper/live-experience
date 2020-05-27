@@ -7,6 +7,8 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            activeChannel: {},
+            activeUser: {},
             channels: [],
             users: [],
             messages: []

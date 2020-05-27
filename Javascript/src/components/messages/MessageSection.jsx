@@ -9,7 +9,7 @@ class MessageSection extends Component {
         let { activeChannel } = this.props;
         return (
             <div className='messages-container panel panel-default'>
-                <div className='panel-heading'>{activeChannel !== undefined ? activeChannel.name: 'None'}</div>
+                <div className='panel-heading'>{activeChannel !== undefined ? activeChannel.name: 'Select a channel'}</div>
                 <div className='panel-body messages'>
                     <MessagesList {...this.props} />
                     <MessageForm {...this.props} />
