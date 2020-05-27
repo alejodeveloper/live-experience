@@ -6,7 +6,7 @@ class UserForm extends Component {
         e.preventDefault();
         const node = this.refs.userName;
         const userName = node.value;
-        this.props.serUserName(userName);
+        this.props.setUserName(userName);
         node.value = '';
     }
 
@@ -26,7 +26,7 @@ class UserForm extends Component {
 }
 
 UserForm.propTypes = {
-    serUserName: PropTypes.func.isRequired
+    setUserName: PropTypes.func.isRequired
 }
 
 export default UserForm
