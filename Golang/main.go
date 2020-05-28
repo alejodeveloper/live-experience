@@ -3,13 +3,38 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"github.com/gorilla/websocket"
 )
+
+var upgrader = websocket.Upgrader{
+	ReadBufferSize: 1024,
+	WriteBufferSize: 1024,
+	CheckOrigin: func(r *http.Request) bool { return true },
+}
 
 func main() {
 	http.HandleFunc("/", handlerRequest)
 	http.ListenAndServe(":8005", nil)
 }
 
-func handlerRequest(responseWriter http.ResponseWriter, request *http.Request){
-	fmt.Fprintf(responseWriter, "Sup... First go server")
+func handlerRequest(w http.ResponseWriter, r *http.Request){
+	upgrader.CheckOrigin = func(r *http.Request) bool { return true }
+	socket, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	for {
+		msgType, msg, err := socket.ReadMessage()
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		fmt.Println(string(msg))
+		if err := socket.WriteMessage(msgType, msg); err != nil {
+			fmt.Println(err)
+			return
+		}
+	}
 }
