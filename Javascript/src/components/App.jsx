@@ -3,6 +3,8 @@ import ChannelSection from './channels/ChannelSection.jsx';
 import UserSection from './user/UserSection.jsx';
 import MessageSection from './messages/MessageSection.jsx';
 
+import Socket from '../socket.js'
+
 class App extends Component {
     constructor(props) {
         super(props);
@@ -20,58 +22,106 @@ class App extends Component {
 
     componentDidMount() {
         // Connect to websocker
-        let webSocket = new WebSocket('ws://echo.websocket.io')
-        webSocket.onmessage = this.message.bind(this);
-        webSocket.onopen = this.onOpen.bind(this);
-        webSocket.onclose = this.onClose.bind(this);
+        let webSocket = this.webSocket = new Socket();
+        socket.on('connect', this.onConnect.bind(this));
+        socket.on('disconnect', this.onDisconnect.bind(this));
+        socket.on('channel add', this.onAddChannel.bind(this));
+        socket.on('user add', this.onAddUser.bind(this));
+        socket.on('user edit', this.onEditUser.bind(this));
+        socket.on('user remove', this.onRemoveUser.bind(this));
+        socket.on('message add', this.onAddMessage.bind(this));
     }
 
     // *-*End lifecycle hooks*-*
 
-    message(e) {
-
-    }
-
-    onOpen() {
+    onConnect() {
         this.setState({connected: true});
+        this.webSocket.emit('user subscribe');
+        this.webSocket.emit('channel subscribe');
     }
 
-    onClose() {
+    onDisconnect() {
         this.setState({connected: false});
+        this.webSocket.emit('user unsubscribe');
+        this.webSocket.emit('channel unsubscribe');
+
+    }
+
+    newChannel(channel){
+        let { channels } = this.state;
+        channels.push(channel);
+        this.setState({channels});
+    }
+
+    onAddUser(user){
+        let { users } = this.state;
+        users.push(user);
+        this.setState({users});
+    }
+
+    onRemoveUser(removeUser) {
+        let { users } = this.state;
+        users = users.filter(user => {
+            return user.id !== removeUser.id
+        });
+        this.setState({users});
+    }
+
+    onEditUser(editUser){
+        let {users} = this.state;
+        users = users.map(user => {
+            if (editUser.id === user.id){
+                return editUser;
+            }
+            return user;
+        });
+        this.setState({users});
+    }
+
+    onAddChannel(channel) {
+        let {channels} = this.state;
+        channels.push(channel);
+        this.setState({channels});
     }
 
     addChannel(name){
-        let { channels } = this.state;
-        // Set the name value and id into the channels array
-        channels.push({id: channels.length, name});
-        this.setState({ channels });
+        this.webSocket.emit('channel add', {name});
+
         // TODO: Add server calls here
+        
     }
     setChannel(activeChannel) {
         this.setState({activeChannel});
-        // TODO: Get channels messages
-
+        this.webSocket.emit('channel unsubscribe');
+        this.setState({'messages': []});
+        this.webSocket.emit(
+            'message subscribe',
+            {channelId: activeChannel.id}
+        );
     }
 
     setUserName(name){
-        let { users } = this.state;
+        this.webSocket.emit('edit user', { name });
         // Set the name value and id into the channels array
-        users.push({id: users.length, name});
-        this.setState({ users });
-        // TODO: Add server calls here
     }
+
     setUser(activeUser) {
         this.setState({ activeUser });
         // TODO: Get users messages
 
     }
 
-    addMessage(body) {
-        let {messages, users } = this.state;
-        let createdAt = new Date;
-        let author = users.length > 0 ? users[0].name : 'anonymous';
-        messages.push({id: messages.length, body, createdAt, author});
+    onAddMessage(message) {
+        let {messages } = this.state;
+        messages.push(message);
         this.setState({ messages });
+    }
+
+    addMessage(body) {
+        let {activeChannel} = this.state;
+        this.webSocket.emit('message add', 
+            {channelId: activeChannel.id, body}
+        );
     }
 
 
