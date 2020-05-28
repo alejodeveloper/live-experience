@@ -23,13 +23,13 @@ class App extends Component {
     componentDidMount() {
         // Connect to websocker
         let webSocket = this.webSocket = new Socket();
-        socket.on('connect', this.onConnect.bind(this));
-        socket.on('disconnect', this.onDisconnect.bind(this));
-        socket.on('channel add', this.onAddChannel.bind(this));
-        socket.on('user add', this.onAddUser.bind(this));
-        socket.on('user edit', this.onEditUser.bind(this));
-        socket.on('user remove', this.onRemoveUser.bind(this));
-        socket.on('message add', this.onAddMessage.bind(this));
+        webSocket.on('connect', this.onConnect.bind(this));
+        webSocket.on('disconnect', this.onDisconnect.bind(this));
+        webSocket.on('channel add', this.onAddChannel.bind(this));
+        webSocket.on('user add', this.onAddUser.bind(this));
+        webSocket.on('user edit', this.onEditUser.bind(this));
+        webSocket.on('user remove', this.onRemoveUser.bind(this));
+        webSocket.on('message add', this.onAddMessage.bind(this));
     }
 
     // *-*End lifecycle hooks*-*
