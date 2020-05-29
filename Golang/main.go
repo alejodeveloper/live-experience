@@ -2,14 +2,14 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 	"github.com/gorilla/websocket"
+	"net/http"
 )
 
 var upgrader = websocket.Upgrader{
-	ReadBufferSize: 1024,
+	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
-	CheckOrigin: func(r *http.Request) bool { return true },
+	CheckOrigin:     func(r *http.Request) bool { return true },
 }
 
 func main() {
@@ -17,8 +17,8 @@ func main() {
 	http.ListenAndServe(":8005", nil)
 }
 
-func handlerRequest(w http.ResponseWriter, r *http.Request){
-	
+func handlerRequest(w http.ResponseWriter, r *http.Request) {
+
 	socket, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		fmt.Println(err)
